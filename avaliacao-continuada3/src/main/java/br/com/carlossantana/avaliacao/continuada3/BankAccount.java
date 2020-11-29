@@ -14,7 +14,7 @@ public abstract class BankAccount {
     protected Integer fkClient;
     protected Double balanceBankAccount;
     protected String typeBankAccount;
-    protected Double operationRate = 0.10;
+    protected static Double operationRate = 0.10;
 
 //    public BankAccount(Integer idBankAccount, Integer fkClient) {
 //        this.idBankAccount = idBankAccount;

@@ -175,8 +175,8 @@
         <Container class="javax.swing.JPanel" name="jPanel3">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Dep&#xf3;sito">
-                <Property name="tabTitle" type="java.lang.String" value="Dep&#xf3;sito"/>
+              <JTabbedPaneConstraints tabName="Depositar">
+                <Property name="tabTitle" type="java.lang.String" value="Depositar"/>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>

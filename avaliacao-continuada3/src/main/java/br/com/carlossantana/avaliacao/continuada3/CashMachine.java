@@ -241,7 +241,7 @@ public class CashMachine extends javax.swing.JFrame {
                 .addComponent(jButton4))
         );
 
-        jTabbedPane1.addTab("Depósito", jPanel3);
+        jTabbedPane1.addTab("Depositar", jPanel3);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
