@@ -2,19 +2,19 @@
 
 cd $HOME
 
-pwd
-
 ls | grep -q av_cont3_java
 
 if [ $? = 0 ]
     then
-        echo "clona repo"
-
-        # pwd 
+        echo "Clonando repositório"
 
         git clone "https://github.com/CarlosSantanaSP/av_cont3_java.git"
 
-        cp av_cont3_java/avaliacao-continuada3/target/avaliacao-continuada3-1.0-SNAPSHOT-jar-with-dependencies.jar $HOME/Desktop/
+        mkdir caixa_eletronico
+
+        cp av_cont3_java/avaliacao-continuada3/target/avaliacao-continuada3-1.0-SNAPSHOT-jar-with-dependencies.jar $HOME/Desktop/caixa_eletronico/
+        cp av_cont3_java/installer_av_cont3_java.sh $HOME/Desktop/caixa_eletronico/
+        cp av_cont3_java/README.txt $HOME/Desktop/caixa_eletronico
 
         cd $HOME/Desktop/
 
@@ -43,23 +43,9 @@ if [ $? = 0 ]
         fi
 
     else 
-
-    # else        
-        echo "não clona repo"
         echo "atualiza repo"
-        # cp av_cont3_java/avaliacao-continuada3/target/avaliacao-continuada3-1.0-SNAPSHOT-jar-with-dependencies.jar $HOME/Desktop/
+
         cd $HOME/Desktop/av_cont3_java/
 
         git pull
 fi
-# which java | grep –q /usr/bin/java
-
-# if [ $? = 0 ] 
-#     then echo "toma"
-
-#         echo "outra"
-
-#     else echo "tomei"
-
-#         echo "mais uma"
-# fi
