@@ -21,6 +21,7 @@ public class Login extends javax.swing.JFrame {
     
     public Login() {
         initComponents();
+        setTitle("Caixa Eletrônico");
         setLocationRelativeTo(null);
     }
 
@@ -131,7 +132,7 @@ public class Login extends javax.swing.JFrame {
             lbResult.setForeground(Color.red);
         } else {
             CashMachine cashMachine = new CashMachine(users.get(0));
-            cashMachine.setTitle("Internet Banking");
+            cashMachine.setTitle("Caixa Eletrônico");
             cashMachine.show();
             dispose();
         }
