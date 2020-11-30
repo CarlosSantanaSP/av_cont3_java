@@ -38,21 +38,27 @@ public class CashMachine extends javax.swing.JFrame {
         List<BankAccount> bankAccounts = this.jdbcTemplate.query("SELECT * FROM bankAccount WHERE fkClient=?;",
                 new BeanPropertyRowMapper(SavingsAccount.class), loggedClient.getIdClient());
 
-        this.bankAccount = bankAccounts.get(0);
-        
+        BankAccount account = bankAccounts.get(0);
+        String accountType = account.getTypeBankAccount();
+
+        if (account.getTypeBankAccount().equals("CurrentAccount")) {
+            this.bankAccount = new CurrentAccount(account.getIdBankAccount(), account.getFkClient(), account.getBalanceBankAccount(), "CurrentAccount");
+
+        } else {
+            this.bankAccount = account;
+        }
+
     }
 
     public void updateScreen() {
-        
+
         openClientAccount();
-        
-        
+
         lbClientAccountType.setText(bankAccount.getTypeBankAccount());
         lbClientBalance.setText(String.valueOf(bankAccount.getBalanceBankAccount()));
         lbClientAccountId.setText(String.valueOf(loggedClient.getIdClient()));
-
         lbClientName.setText(loggedClient.getNameClient());
-
+        lbOperationRate.setText(String.valueOf(bankAccount.getOperationRate()));
     }
 
     /**
@@ -75,17 +81,24 @@ public class CashMachine extends javax.swing.JFrame {
         lbClientAccountType = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         lbClientAccountId = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        lbOperationRate = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         tfDepositValue = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        jButton4 = new javax.swing.JButton();
-        lbOperationResume = new javax.swing.JLabel();
-        lbOperationResume1 = new javax.swing.JLabel();
-        lbOperationResume2 = new javax.swing.JLabel();
-        lbOperationResume3 = new javax.swing.JLabel();
+        btDeposit = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextPane1 = new javax.swing.JTextPane();
+        lbDepositResult = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTextPane2 = new javax.swing.JTextPane();
+        jLabel3 = new javax.swing.JLabel();
+        tfTakeOutValue = new javax.swing.JTextField();
+        btTakeOut = new javax.swing.JButton();
+        lbTakeOutResult = new javax.swing.JLabel();
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -100,7 +113,7 @@ public class CashMachine extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel5.setText("Saldo Atual:");
+        jLabel5.setText("Saldo Atual(R$):");
 
         lbClientBalance.setText("---");
 
@@ -115,6 +128,10 @@ public class CashMachine extends javax.swing.JFrame {
         jLabel10.setText("Número da Conta");
 
         lbClientAccountId.setText("---");
+
+        jLabel8.setText("Taxa Operação:");
+
+        lbOperationRate.setText("---");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -131,13 +148,17 @@ public class CashMachine extends javax.swing.JFrame {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel10)
                             .addComponent(jLabel9)
-                            .addComponent(jLabel5))
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel8))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(lbClientAccountId, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
-                            .addComponent(lbClientAccountType, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lbClientBalance, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(0, 98, Short.MAX_VALUE)))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbOperationRate, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(lbClientAccountId, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
+                                    .addComponent(lbClientAccountType, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(lbClientBalance, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -159,23 +180,21 @@ public class CashMachine extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(lbClientBalance))
-                .addContainerGap(241, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lbOperationRate)
+                    .addComponent(jLabel8))
+                .addContainerGap(218, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Dados", jPanel2);
 
-        tfDepositValue.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                tfDepositValueKeyPressed(evt);
-            }
-        });
-
         jLabel2.setText("Qual o valor que deseja depositar?");
 
-        jButton4.setText("Depositar");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        btDeposit.setText("Depositar");
+        btDeposit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                btDepositActionPerformed(evt);
             }
         });
 
@@ -189,6 +208,8 @@ public class CashMachine extends javax.swing.JFrame {
         jTextPane1.setText("Realize depósitos de quantias em dinheiro para a sua conta. Por favor insira o valor a ser depositado utilizando ponto, para a separação da casas decimais, ao invés de virgula.");
         jScrollPane1.setViewportView(jTextPane1);
 
+        lbDepositResult.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -196,26 +217,19 @@ public class CashMachine extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(145, 145, 145)
-                        .addComponent(jButton4)
+                        .addGap(141, 141, 141)
+                        .addComponent(btDeposit)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lbOperationResume1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lbOperationResume2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lbOperationResume3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(lbOperationResume, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGap(101, 101, 101))
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addGap(16, 16, 16)
-                                .addComponent(tfDepositValue, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE))))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                                .addComponent(tfDepositValue, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                    .addComponent(lbDepositResult, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -229,19 +243,76 @@ public class CashMachine extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(tfDepositValue, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(lbOperationResume, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lbOperationResume1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lbOperationResume2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lbOperationResume3, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
+                .addComponent(lbDepositResult, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(40, 40, 40)
+                .addComponent(btDeposit)
+                .addGap(50, 50, 50))
         );
 
         jTabbedPane1.addTab("Depositar", jPanel3);
+
+        jLabel1.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Saque Bancário");
+
+        jTextPane2.setText("Realize saques de quantias em dinheiro para a sua conta. Por favor insira o valor a ser depositado utilizando ponto, para a separação da casas decimais, ao invés de virgula.");
+        jScrollPane2.setViewportView(jTextPane2);
+
+        jLabel3.setText("Qual o valor que deseja sacar?");
+
+        btTakeOut.setText("Sacar");
+        btTakeOut.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btTakeOutActionPerformed(evt);
+            }
+        });
+
+        lbTakeOutResult.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(lbTakeOutResult, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(tfTakeOutValue))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createSequentialGroup()
+                        .addGap(155, 155, 155)
+                        .addComponent(btTakeOut)
+                        .addGap(0, 163, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(31, 31, 31)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(52, 52, 52)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(tfTakeOutValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
+                .addComponent(lbTakeOutResult, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(33, 33, 33)
+                .addComponent(btTakeOut)
+                .addGap(55, 55, 55))
+        );
+
+        jTabbedPane1.addTab("Sacar", jPanel4);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -263,41 +334,52 @@ public class CashMachine extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void btDepositActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btDepositActionPerformed
         Double depositValue = Double.valueOf(tfDepositValue.getText());
+//
+//        System.out.println(bankAccount.calculateOperationCost(
+//                depositValue, bankAccount.getOperationRate()));
 
-        System.out.println(depositValue);
-        System.out.println(tfDepositValue.getText());
-        System.out.println(loggedClient.getIdClient());
-        System.out.println(bankAccount.getIdBankAccount());
+        
         System.out.println(bankAccount.getBalanceBankAccount());
-        System.out.println(bankAccount.getBalanceBankAccount() + depositValue);
+        Double operationCost = bankAccount.calculateOperationCost(depositValue, bankAccount.getOperationRate());
 
-        Double finalValue = bankAccount.getBalanceBankAccount() + depositValue;
+        Double finalValue = bankAccount.getBalanceBankAccount() + depositValue - operationCost;
 
         bankAccount.deposit(depositValue);
+
         this.jdbcTemplate.update("UPDATE bankAccount SET balanceBankAccount=? WHERE fkClient=?",
-            finalValue,
-            loggedClient.getIdClient()
+                finalValue,
+                loggedClient.getIdClient()
         );
 
-        //this.jdbcTemplate.update("UPDATE bankAccount SET balanceBankAccount=1032.232 WHERE fkClient=1 and idBankAccount=1");
+        lbDepositResult.setText("Deposito realizado com sucesso");
+        lbDepositResult.setForeground(Color.green);
 
-        lbOperationResume.setText("");
-        lbOperationResume1.setText("");
-        lbOperationResume2.setText("");
-        tfDepositValue.setText("");
-        lbOperationResume3.setText("Depósito realizado com sucesso");
-        lbOperationResume3.setForeground(Color.green);
-
-        System.out.println("UPDATE");
-
+        System.out.println("UPDATE Deposit");
         updateScreen();
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_btDepositActionPerformed
 
-    private void tfDepositValueKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfDepositValueKeyPressed
+    private void btTakeOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btTakeOutActionPerformed
+        Double takeOutValue = Double.valueOf(tfTakeOutValue.getText());
 
-    }//GEN-LAST:event_tfDepositValueKeyPressed
+        Double finalValue = bankAccount.getBalanceBankAccount() - takeOutValue
+                - bankAccount.calculateOperationCost(
+                        takeOutValue, bankAccount.getOperationRate());
+
+        bankAccount.takeOut(takeOutValue);
+
+        this.jdbcTemplate.update("UPDATE bankAccount SET balanceBankAccount=? WHERE fkClient=?",
+                finalValue,
+                loggedClient.getIdClient()
+        );
+
+        lbTakeOutResult.setText("Saque realizado com sucesso");
+        lbTakeOutResult.setForeground(Color.green);
+
+        System.out.println("UPDATE TakeOut");
+        updateScreen();
+    }//GEN-LAST:event_btTakeOutActionPerformed
 
     /**
      * @param args the command line arguments
@@ -335,27 +417,34 @@ public class CashMachine extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton4;
+    private javax.swing.JButton btDeposit;
+    private javax.swing.JButton btTakeOut;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextPane jTextPane1;
+    private javax.swing.JTextPane jTextPane2;
     private javax.swing.JLabel lbClientAccountId;
     private javax.swing.JLabel lbClientAccountType;
     private javax.swing.JLabel lbClientBalance;
     private javax.swing.JLabel lbClientName;
-    private javax.swing.JLabel lbOperationResume;
-    private javax.swing.JLabel lbOperationResume1;
-    private javax.swing.JLabel lbOperationResume2;
-    private javax.swing.JLabel lbOperationResume3;
+    private javax.swing.JLabel lbDepositResult;
+    private javax.swing.JLabel lbOperationRate;
+    private javax.swing.JLabel lbTakeOutResult;
     private javax.swing.JTextField tfDepositValue;
+    private javax.swing.JTextField tfTakeOutValue;
     // End of variables declaration//GEN-END:variables
 }

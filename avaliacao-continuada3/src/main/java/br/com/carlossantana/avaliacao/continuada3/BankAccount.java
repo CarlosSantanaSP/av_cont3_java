@@ -14,37 +14,40 @@ public abstract class BankAccount {
     protected Integer fkClient;
     protected Double balanceBankAccount;
     protected String typeBankAccount;
-    protected static Double operationRate = 0.10;
+    protected final Double operationRate = 0.05;
 
-//    public BankAccount(Integer idBankAccount, Integer fkClient) {
-//        this.idBankAccount = idBankAccount;
-//        this.fkClient = fkClient;        
-//    }
-    public Integer getIdBankAccount() {
-        return idBankAccount;
-    }
-
+    
+    
     public abstract void takeOut(Double takeOutValue);
 
     public void deposit(Double depositValue) {
 
         this.balanceBankAccount += depositValue;
-        this.balanceBankAccount -= verifyOperationCost(depositValue);
-        
-        
+        this.balanceBankAccount -= calculateOperationCost(depositValue, getOperationRate());
         
     }
 
-    public Double verifyOperationCost(Double operationValue) {
-
-        Double cost = operationValue * this.operationRate;
-
+    public static Double calculateOperationCost(Double operationValue, Double operationRate) {
+        Double cost = operationValue * operationRate;
         return cost;
     }
+    public Double getOperationRate() {
+        return operationRate;
+    }
+    
+    public Integer getIdBankAccount() {
+        return idBankAccount;
+    }
+    
+    public void setIdBankAccount(Integer idBankAccount) {
+        this.idBankAccount = idBankAccount;
+    }
 
-//    public Integer getIdBankAccount() {
-//        return idBankAccount;
-//    }
+    public void setFkClient(Integer fkClient) {
+        this.fkClient = fkClient;
+    }
+
+
     public Integer getFkClient() {
         return fkClient;
     }
@@ -57,9 +60,6 @@ public abstract class BankAccount {
         return typeBankAccount;
     }
 
-//    public void setIdBankAccount(Integer idBankAccount) {
-//        this.idBankAccount = idBankAccount;
-//    }
     public void setBalanceBankAccount(Double balanceBankAccount) {
         this.balanceBankAccount = balanceBankAccount;
     }

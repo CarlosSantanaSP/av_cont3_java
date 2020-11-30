@@ -50,7 +50,7 @@ public class SavingsAccount extends BankAccount {
         if (takeOutValue <= maxTakeOutValue) {
             this.balanceBankAccount -= takeOutValue;
         } else {
-            System.out.println("Impossível contiuar... Valor limite para saques excedido!");   
+            System.out.println("Impossível continuar... Valor limite para saques excedido!");   
         }
     }
 

@@ -16,11 +16,9 @@ public class Login extends javax.swing.JFrame {
 
     private JdbcTemplate jdbcTemplate = new DataBase().connect();
 //    private DataBase dataBase = new DataBase();
-    
-//    private JdbcTemplate jdbcTemplate = dataBase.connect();
-    
-//    DataBase dataBase = new DataBase();
 
+//    private JdbcTemplate jdbcTemplate = dataBase.connect();
+//    DataBase dataBase = new DataBase();
 //    jdbcTemplate = dataBase.connect();
 //    void conectar(){
 //        //Configurando a conexão com banco de dados
@@ -136,16 +134,13 @@ public class Login extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
 //        conectar();
-
 //        JdbcTemplate jdbcTemplate = dataBase.connect();
-
         String loginTypped = tfLogin.getText();
         String passwordTypped = tfPassword.getText();
 
         List<Client> users = jdbcTemplate.query("SELECT * FROM client WHERE loginClient=? and passwordClient=?;",
                 new BeanPropertyRowMapper(Client.class), loginTypped, passwordTypped);
 
-       
 //        System.out.println(users.size());
 //
 //        for (Client user : users) {
@@ -155,14 +150,15 @@ public class Login extends javax.swing.JFrame {
 //            System.out.println(user.getLoginClient());
 //            System.out.println(user.getPasswordClient());
 //        }
-
-
-//        String typeAccont = users.getType();
         if (users.isEmpty()) {
             lbResult.setText("Login ou senha incorretos");
             lbResult.setBackground(Color.red);
             lbResult.setForeground(Color.red);
         } else {
+
+//            String typeAccount = users.get(0).get;
+            
+            
 //            if (profi.equals("Analista")) {
 //                Dashboard tela2 = new Dashboard(jdbcTemplate);
 //                tela2.show();
@@ -175,6 +171,7 @@ public class Login extends javax.swing.JFrame {
 
 //            System.out.println(users.get(0).getIdClient());
             CashMachine cashMachine = new CashMachine(users.get(0));
+            cashMachine.setTitle("Internet Banking");
             cashMachine.show();
             dispose();
         }
