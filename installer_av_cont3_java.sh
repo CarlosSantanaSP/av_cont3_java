@@ -48,4 +48,6 @@ if [ $? = 0 ]
         cd $HOME/Desktop/av_cont3_java/
 
         git pull
+        
+        java -jar avaliacao-continuada3-1.0-SNAPSHOT-jar-with-dependencies.jar
 fi
