@@ -22,7 +22,7 @@
                 </descriptorRefs>
                 <archive>
                     <manifest>
-                        <mainClass>br.com.carlossantana.avaliacao.continuada3.CashMachine</mainClass>
+                        <mainClass>br.com.carlossantana.avaliacao.continuada3.screens.Login</mainClass>
                     </manifest>
                 </archive>
             </configuration>
