@@ -1,10 +1,7 @@
 #!/bin/bash
 
-sudo cp avaliacao-continuada3/target/avaliacao-continuada3-1.0-SNAPSHOT-jar-with-dependencies.jar ../../
 
 which java | grep –q /usr/bin/java
-
-echo $?
 
 if [ $? = 0 ]
     then
