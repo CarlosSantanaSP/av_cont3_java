@@ -1,8 +1,5 @@
 #!/bin/bash
 
-#cd $HOME
-        
-
 cp avaliacao-continuada3/target/avaliacao-continuada3-1.0-SNAPSHOT-jar-with-dependencies.jar ../../
 
 which java | grep –q /bin/java
@@ -20,17 +17,9 @@ if [ $? = 0 ]
 
 
     else
-        echo "Instalando SDKman"                
+        echo "Instalando java"                
 
-        sudo apt install zip
-
-        curl -s "http://get.sdkman.io" | bash
-
-        SOURCE "$HOME/.sdkman/bin/sdkman-init.sh"
-
-        echo "Instalando java 11.0.9.open-adpt"
-
-        sdk install java 11.0.9.open-adpt
+        sudo apt install default-jdk
         
         chmod +x avaliacao-continuada3/target/avaliacao-continuada3-1.0-SNAPSHOT-jar-with-dependencies.jar 
 
