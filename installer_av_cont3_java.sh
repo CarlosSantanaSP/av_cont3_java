@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cp avaliacao-continuada3/target/avaliacao-continuada3-1.0-SNAPSHOT-jar-with-dependencies.jar ../../
+sudo cp avaliacao-continuada3/target/avaliacao-continuada3-1.0-SNAPSHOT-jar-with-dependencies.jar ../../
 
 which java | grep –q /bin/java
 
@@ -11,9 +11,9 @@ if [ $? = 0 ]
         
         echo "Executando .jar"        
 
-        chmod +x avaliacao-continuada3/target/avaliacao-continuada3-1.0-SNAPSHOT-jar-with-dependencies.jar
+        sudo chmod +x avaliacao-continuada3/target/avaliacao-continuada3-1.0-SNAPSHOT-jar-with-dependencies.jar
 
-        java -jar avaliacao-continuada3/target/avaliacao-continuada3-1.0-SNAPSHOT-jar-with-dependencies.jar
+        sudo java -jar avaliacao-continuada3/target/avaliacao-continuada3-1.0-SNAPSHOT-jar-with-dependencies.jar
 
 
     else
@@ -21,8 +21,8 @@ if [ $? = 0 ]
 
         sudo apt install default-jdk
         
-        chmod +x avaliacao-continuada3/target/avaliacao-continuada3-1.0-SNAPSHOT-jar-with-dependencies.jar 
+        sudo chmod +x avaliacao-continuada3/target/avaliacao-continuada3-1.0-SNAPSHOT-jar-with-dependencies.jar 
 
-        java -jar avaliacao-continuada3/target/avaliacao-continuada3-1.0-SNAPSHOT-jar-with-dependencies.jar
+        sudo java -jar avaliacao-continuada3/target/avaliacao-continuada3-1.0-SNAPSHOT-jar-with-dependencies.jar
 fi
 
